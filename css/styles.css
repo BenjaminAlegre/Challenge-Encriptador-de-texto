@@ -1,0 +1,79 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-container,
+  .buttons-container,
+  .output-container {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .buttons-container {
+    text-align: center;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #encriptar {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  #desencriptar {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .output-container {
+    text-align: center;
+  }
+  
+  #texto-encriptado {
+    font-size: 18px;
+  }
+  
+  /* Responsive design */
+  
+  @media (max-width: 768px) {
+    .container {
+      width: 95%;
+    }
+  
+    textarea {
+      height: 100px;
+    }
+  }
+  
