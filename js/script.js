@@ -1,42 +1,73 @@
 // script.js
 
-// Función para encriptar el texto
-function encryptText(text) {
-    let encryptedText = '';
-    for (let i = 0; i < text.length; i++) {
-        let charCode = text.charCodeAt(i);
-        encryptedText += String.fromCharCode(charCode + 3);
-    }
-    return encryptedText;
+const traduccion = { "a": "ai", "e": "enter", "i": "imes", "o": "ober", "u": "ufat" };
+
+function encriptar(texto, traduccion) {
+    return texto.split('').map(char => traduccion[char] || char).join('');
 }
 
-// Función para desencriptar el texto
-function decryptText(text) {
-    let decryptedText = '';
-    for (let i = 0; i < text.length; i++) {
-        let charCode = text.charCodeAt(i);
-        decryptedText += String.fromCharCode(charCode - 3);
-    }
-    return decryptedText;
+function desencriptar(texto, traduccion) {
+    Object.keys(traduccion).forEach(key => {
+        texto = texto.replace(new RegExp(traduccion[key], 'g'), key);
+    });
+    return texto;
 }
 
-// Manejar eventos de botones
-document.getElementById('encrypt-button').addEventListener('click', function() {
-    const inputText = document.getElementById('input-text').value;
-    const encryptedText = encryptText(inputText);
-    document.getElementById('output-text').value = encryptedText;
-});
+function validateInput(texto) {
+    return /^[a-z\s]+$/.test(texto);
+}
 
-document.getElementById('decrypt-button').addEventListener('click', function() {
-    const inputText = document.getElementById('input-text').value;
-    const decryptedText = decryptText(inputText);
-    document.getElementById('output-text').value = decryptedText;
-});
+function toggleWarning(show) {
+    const warning = document.querySelector("#warning");
+    warning.style.display = show ? "block" : "none";
+}
 
-// Función para copiar el texto al portapapeles
-document.getElementById('copy-button').addEventListener('click', function() {
-    const outputText = document.getElementById('output-text');
-    outputText.select();
-    document.execCommand('copy');
-    alert('Texto copiado al portapapeles');
-});
+function handleEncryption() {
+    const textarea = document.querySelector("#texto");
+    const texto = textarea.value.trim();
+    if (!validateInput(texto)) {
+        toggleWarning(true);
+        return;
+    }
+    toggleWarning(false);
+    const resultado = encriptar(texto, traduccion);
+    mostrarResultado(resultado);
+}
+
+function handleDecryption() {
+    const textarea = document.querySelector("#texto");
+    const texto = textarea.value.trim();
+    if (!validateInput(texto)) {
+        toggleWarning(true);
+        return;
+    }
+    toggleWarning(false);
+    const resultado = desencriptar(texto, traduccion);
+    mostrarResultado(resultado);
+}
+
+function mostrarResultado(resultado) {
+    const areaDefault = document.querySelector("#default");
+    const areaResult = document.querySelector("#result");
+    const textoOut = document.querySelector("#texto_out");
+    
+    if (resultado) {
+        areaDefault.classList.add("invisible");
+        areaResult.classList.remove("invisible");
+        textoOut.value = resultado;
+    } else {
+        areaDefault.classList.remove("invisible");
+        areaResult.classList.add("invisible");
+    }
+}
+
+function copyToClipboard() {
+    const textoOut = document.querySelector("#texto_out");
+    navigator.clipboard.writeText(textoOut.value)
+        .then(() => alert('Texto copiado al portapapeles'))
+        .catch(err => alert('Error al copiar el texto: ' + err));
+}
+
+document.querySelector('#enc').addEventListener('click', handleEncryption);
+document.querySelector('#des').addEventListener('click', handleDecryption);
+document.querySelector('#copiar').addEventListener('click', copyToClipboard);
